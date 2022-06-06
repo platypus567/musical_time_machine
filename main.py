@@ -40,9 +40,14 @@ for title in song_titles:
 
 print(title_list)
 song_uris = []
+date = year.split("-")[0]
 for title in title_list:
-    results = sp.search(q=f"track:{title} year:{year}", type="track") #searching results for that year
-    song_uris.append(results["tracks"]["items"][0]["uri"])
+    try:
+        results = sp.search(q=f"track:{title} year:{date}", type="track") #searching results for that year
+        print(results["tracks"]["items"])
+        song_uris.append(results["tracks"]["items"][0]["uri"])
+    except IndexError:
+        print("Song doesn't exist, skipping...")
 print(song_uris)
 
 playlist = sp.user_playlist_create(user=user_id, name=f"{year} Billboard 100", public=False)
